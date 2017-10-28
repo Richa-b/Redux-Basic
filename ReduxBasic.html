@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>
+        Redux Basic
+    </title>
+    <script src="https://npmcdn.com/redux@latest/dist/redux.min.js"></script>
+</head>
+<body>
+<span id="clickCount">0</span>
+<button id="increment">Increment</button>
+<button id="decrementAsync">Decrement Async</button>
+<script>
+    var initialState = {count: 100};
+    var store = Redux.createStore(counterReducer);
+
+    function render() {
+        document.getElementById("clickCount").innerHTML = store.getState().count;
+    }
+
+    render();
+    store.subscribe(render);
+
+    function counterReducer(currentState, action) {
+        var nextState = Object.assign({}, currentState);
+        if (currentState === undefined) {
+            nextState = initialState;
+        } else {
+            switch (action.type) {
+                case 'INC':
+                    nextState.count = currentState.count + 1;
+                    break;
+                case 'DEC':
+                    nextState.count = currentState.count - 1;
+                    break;
+                default:
+                    nextState.count = currentState.count;
+                    break;
+
+            }
+        }
+        return nextState;
+    }
+
+    document.getElementById("increment").addEventListener('click', function () {
+        var action = {type: 'INC'};
+        store.dispatch(action)
+    })
+
+    document.getElementById("decrementAsync").addEventListener('click', function () {
+        var action = {type: 'DEC'};
+        setTimeout(function () {
+            store.dispatch(action)
+        }, 1000)
+    })
+
+</script>
+</body>
+</html>
