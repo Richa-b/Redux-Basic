@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>
+        Redux Basic
+    </title>
+    <script src="https://npmcdn.com/redux@latest/dist/redux.min.js"></script>
+</head>
+<body>
+<input id="num1"/>
++
+<input id="num2"/>
+=
+<span id="result"></span>
+<button id="sum">Sum</button>
+</body>
+<script>
+
+    var initialState = {sum: 0};
+    var store = Redux.createStore(sumReducer);
+
+    function render() {
+        document.getElementById("result").innerHTML = store.getState().sum;
+    }
+
+    render();
+    store.subscribe(render);
+
+    document.getElementById("sum").addEventListener('click',function () {
+        var action = {
+            type: 'SUM' ,
+            num1: document.getElementById("num1").value ,
+            num2: document.getElementById("num2").value
+        };
+
+        store.dispatch(action);
+    });
+
+    function sumReducer(currentState, action) {
+
+        var nextState = Object.assign({}, currentState);
+        if (currentState === undefined) {
+            nextState = initialState;
+        } else {
+            switch (action.type) {
+                case 'SUM' :
+                    nextState.sum = parseInt(action.num1) + parseInt(action.num2)
+            }
+        }
+        return nextState;
+    }
+
+</script>
+</html>
